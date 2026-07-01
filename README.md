@@ -1,6 +1,4 @@
-﻿<h1 align="center">
-  
-    <img src="./Untitled.png" alt="CoC Inheritance 2022" width="500" height="166">
+﻿</h1>
   </a>
   <br>
   HealthConnect
