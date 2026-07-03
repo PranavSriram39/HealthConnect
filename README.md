@@ -242,25 +242,20 @@ When users enter a food item, the platform provides detailed information about i
 
 ## 👨‍💻Team Members
 
-1.Abhiram
-<br>
-Email-23r01a0598@cmrithyderabad.edu.in
-<br>
+1. Abhiram<br>
+Email: 23r01a0598@cmrithyderabad.edu.in
+<br><br>
 
-2. L.Gowthum
-<br>
-Email-23r01a0599@cmrithyderabad.edu.in
-<br>
+2. L. Gowthum<br>
+Email: 23r01a0598@cmrithyderabad.edu.in
+<br><br>
 
-3.  S.Abhishek
-<br>
-Email-23r01a05c0@cmrithyderabad.edu.in
-<br>
+3. S. Abhishek<br>
+Email: 23r01a05c0@cmrithyderabad.edu.in
+<br><br>
 
-4. S.Pranav
-<br>
-Email-23r01a05c1@cmrithyderabad.edu.in
-<br>
+4. S. Pranav<br>
+Email: 23r01a05c1@cmrithyderabad.edu.in
 
 ## 👨‍🏫Mentors
 
