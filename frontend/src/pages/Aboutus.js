@@ -4,22 +4,22 @@ import React from "react";
 const teamMembers = [
   {
     name: "Sriram Pranav",
-    email: "srirampranav@gmail.com",
+    email: "23r01a05c1@cmrithyderabad.edu.in",
     imgSrc: "https://static.vecteezy.com/system/resources/thumbnails/023/641/623/small_2x/avatar-of-a-cute-little-boy-isolated-illustration-in-cartoon-style-vector.jpg" 
   },
   {
     name: "Abhishek",
-    email: "abhishek@gmail.com",
+    email: "23r01a05c0@cmrithyderabad.edu.in",
     imgSrc: "https://static.vecteezy.com/system/resources/thumbnails/023/641/623/small_2x/avatar-of-a-cute-little-boy-isolated-illustration-in-cartoon-style-vector.jpg" 
   },
   {
     name: "Abhiram",
-    email: "abhiram@gmail.com",
+    email: "23r01a0598@cmrithyderabad.edu.in",
     imgSrc: "https://static.vecteezy.com/system/resources/thumbnails/023/641/623/small_2x/avatar-of-a-cute-little-boy-isolated-illustration-in-cartoon-style-vector.jpg" 
   },
   {
-    name: "Gowtham",
-    email: "gowtham@gmail.com",
+    name: "Gowthum",
+    email: "23r01a0599@cmrithyderabad.edu.in",
     imgSrc: "https://static.vecteezy.com/system/resources/thumbnails/023/641/623/small_2x/avatar-of-a-cute-little-boy-isolated-illustration-in-cartoon-style-vector.jpg" 
   }
 ];

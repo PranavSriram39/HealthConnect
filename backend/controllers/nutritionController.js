@@ -55,6 +55,35 @@ function mapFoodItem(item) {
   return mapped;
 }
 
+function mapUSDAItem(item) {
+  // item is expected from FoodData Central search results
+  const nutrients = Array.isArray(item.foodNutrients) ? item.foodNutrients : [];
+  const find = (names) => {
+    const n = nutrients.find(nr => names.some(k => (nr.nutrientName || '').toLowerCase().includes(k)));
+    return n ? n.value : null;
+  };
+
+  const mapped = {
+    name: item.description || item.lowercaseDescription || item.dataType || 'Unknown',
+    serving_qty: item.servingSize || 1,
+    serving_unit: item.servingSizeUnit || 'serving',
+    calories: find(['energy', 'kilocalories', 'calories']),
+    protein: find(['protein']),
+    carbohydrates: find(['carbohydrate', 'carbohydrates', 'carb']),
+    fat: find(['total lipid', 'fat']),
+    fiber: find(['fiber']),
+    sugar: find(['sugars', 'sugar']),
+    sodium: find(['sodium']),
+    cholesterol: find(['cholesterol']),
+    potassium: find(['potassium']),
+    photo: null,
+    full_nutrients: nutrients,
+    vitamins: {},
+  };
+
+  return mapped;
+}
+
 const getNutritionData = async (req, res) => {
   const foodQuery = (req.body?.foodQuery || req.body?.query || '').toString().trim();
 
@@ -72,27 +101,61 @@ const getNutritionData = async (req, res) => {
 
     const appId = process.env.NUTRITIONIX_APP_ID || process.env.APP_ID || '';
     const appKey = process.env.NUTRITIONIX_APP_KEY || process.env.APP_KEY || '';
+    const usdaKey = process.env.USDA_API_KEY || '';
 
-    if (!appId || !appKey) {
+    // Prefer Nutritionix if credentials are present, otherwise fall back to USDA FoodData Central
+    if (appId && appKey) {
+      // Try Nutritionix first; if it returns 401/403 and USDA key exists, fall back to USDA
+      try {
+        const url = 'https://trackapi.nutritionix.com/v2/natural/nutrients';
+        const payload = { query: foodQuery };
+
+        const response = await axios.post(url, payload, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-app-id': appId,
+            'x-app-key': appKey,
+            'User-Agent': 'HealthConnect/1.0',
+          },
+          timeout: 10000,
+        });
+
+        const data = response.data || {};
+        const foodsRaw = Array.isArray(data.foods) ? data.foods : [];
+        var foods = foodsRaw.map(mapFoodItem);
+      } catch (nxErr) {
+        const status = nxErr?.response?.status || nxErr?.status;
+        // if auth issue and USDA key available, fall back
+        if ((status === 401 || status === 403) && usdaKey) {
+          const url = `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${encodeURIComponent(usdaKey)}`;
+          const payload = { query: foodQuery, pageSize: 10 };
+          const response = await axios.post(url, payload, {
+            headers: { 'Content-Type': 'application/json' },
+            timeout: 10000,
+          });
+          const data = response.data || {};
+          const foodsRaw = Array.isArray(data.foods) ? data.foods : [];
+          var foods = foodsRaw.map(mapUSDAItem);
+        } else {
+          // rethrow to outer catch
+          throw nxErr;
+        }
+      }
+    } else if (usdaKey) {
+      // Use USDA FoodData Central search endpoint
+      const url = `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${encodeURIComponent(usdaKey)}`;
+      const payload = { query: foodQuery, pageSize: 10 };
+      const response = await axios.post(url, payload, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000,
+      });
+      const data = response.data || {};
+      // response.foods is an array of food items
+      const foodsRaw = Array.isArray(data.foods) ? data.foods : [];
+      var foods = foodsRaw.map(mapUSDAItem);
+    } else {
       return res.status(500).json({ error: 'Nutrition API credentials are not configured on the server.' });
     }
-
-    const url = 'https://trackapi.nutritionix.com/v2/natural/nutrients';
-    const payload = { query: foodQuery };
-
-    const response = await axios.post(url, payload, {
-      headers: {
-        'Content-Type': 'application/json',
-        'x-app-id': appId,
-        'x-app-key': appKey,
-        'User-Agent': 'HealthConnect/1.0',
-      },
-      timeout: 10000,
-    });
-
-    const data = response.data || {};
-    const foodsRaw = Array.isArray(data.foods) ? data.foods : [];
-    const foods = foodsRaw.map(mapFoodItem);
 
     // cache result
     try {

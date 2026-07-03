@@ -1,57 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 
 const ViewAppointments = () => {
   const [list, setList] = useState([]);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const username = user.username;
-  const role = user.role;
-  
+  const user = JSON.parse(localStorage.getItem("user") || '{}');
+  const username = user?.username || '';
+  const role = user?.role || '';
+
+  const getAppointmentData = useCallback(async () => {
+    try {
+      const userrole = role;
+      const res = await axios.get("/appointmentinfo/getappointments", {
+        params: { username: username, userrole: userrole },
+      });
+      setList(res.data.data || []);
+    } catch (err) {
+      console.error('Error loading appointments', err);
+      setList([]);
+    }
+  }, [username, role]);
 
   const handleclick = async (choice) => {
-    console.log(choice)
     try {
       const response = await fetch('/appointmentinfo/update/', {
         method: "POST",
         body: JSON.stringify(choice),
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' },
       });
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      else {
-        getAppointmentData();
-      }
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      await getAppointmentData();
+    } catch (error) {
+      console.error('Error updating appointment:', error);
     }
-    catch (error) {
-      console.error('Error fetching data:', error);
-    }
-
-
-  }
+  };
 
   useEffect(() => {
-    const getAppointmentData = () => {
-      const userrole = role;
-
-      axios.get("/appointmentinfo/getappointments", {
-        params: {
-          username: username,
-          userrole: userrole,
-        },
-      })
-        .then((res) => {
-          setList(res.data.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-
     getAppointmentData();
-  }, [username, role]);
+  }, [getAppointmentData]);
 
   return (
     <div className="container mx-auto mt-8">
@@ -82,9 +67,18 @@ const ViewAppointments = () => {
                     <td className="py-3 px-6 text-center">{appoint.Name}</td>
                     <td className="py-3 px-6 text-center">{appoint.PName}</td>
                     <td className="py-3 px-6 text-center">{appoint.Drname}</td>
-                    <td className="py-3 px-6 text-center">{appoint.date.slice(0, 10)}</td>
+                    <td className="py-3 px-6 text-center">{appoint.date?.slice(0, 10)}</td>
                     <td className="py-3 px-6 text-center">{appoint.slot}</td>
-                    <td className="py-3 px-6 text-center">{(role === "Doctor") && (appoint.stat === "Pending") && (username === appoint.Drname) ? (<><button onClick={() => { handleclick({ Name: appoint.Name, pName: appoint.PName, dName: appoint.Drname, stat: "Accepted" }) }} className="m-1 bg-[#4caf50] hover:bg-green-600 text-white p-2 w-[60px] rounded-md">Accept</button><button onClick={() => { handleclick({ Name: appoint.Name, pName: appoint.PName, dName: appoint.Drname, stat: "Declined" }) }} className="m-1 bg-[#b82e2e] text-white hover:bg-red-800 p-2 rounded-md w-[60px]">Reject</button></>) : (appoint.stat)}</td>
+                    <td className="py-3 px-6 text-center">
+                      {(role === "Doctor") && (appoint.stat === "Pending") && (username === appoint.Drname) ? (
+                        <>
+                          <button onClick={() => { handleclick({ Name: appoint.Name, pName: appoint.PName, dName: appoint.Drname, stat: "Accepted" }) }} className="m-1 bg-[#4caf50] hover:bg-green-600 text-white p-2 w-[60px] rounded-md">Accept</button>
+                          <button onClick={() => { handleclick({ Name: appoint.Name, pName: appoint.PName, dName: appoint.Drname, stat: "Declined" }) }} className="m-1 bg-[#b82e2e] text-white hover:bg-red-800 p-2 rounded-md w-[60px]">Reject</button>
+                        </>
+                      ) : (
+                        appoint.stat
+                      )}
+                    </td>
                   </tr>
                 ))}
             </tbody>

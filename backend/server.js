@@ -35,7 +35,7 @@ app.use('/appointmentinfo', Appointment);
 app.use('/symptom', Symptom)
 
 // Connect to the database
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 const mongoUri = process.env.MONGOURI;
 
 if (!mongoUri) {

@@ -8,6 +8,7 @@ const Nutrition = () => {
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [serverMessage, setServerMessage] = useState('');
   const [recentSearches, setRecentSearches] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem('recentNutritionSearches') || '[]');
@@ -80,6 +81,9 @@ const Nutrition = () => {
         throw new Error(json.error || 'Unable to fetch nutrition data.');
       }
 
+      // show any server-provided message (e.g. authorization fallback or cache notice)
+      setServerMessage(json.message || (json.cached ? 'Result served from server cache.' : ''));
+
       const matchedFoods = Array.isArray(json.foods) ? json.foods : [];
       setFoods(matchedFoods);
       if (matchedFoods.length > 0) {
@@ -143,6 +147,7 @@ const Nutrition = () => {
           )}
 
           {error && !loading && <div className='rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700'>{error}</div>}
+          {serverMessage && !loading && <div className='rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-700'>{serverMessage}</div>}
 
           {!loading && foods.length > 1 && (
             <div className='rounded-lg border border-gray-200 p-4'>

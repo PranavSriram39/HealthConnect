@@ -87,7 +87,7 @@ function App() {
                   <Route path='/nutrition' element={user ? <Nutrition /> : <Navigate to='/login' />} />
                   <Route path='/bmi' element={user ? <BMICalculator /> : <Navigate to='/login' />} />
                   <Route path='/about' element={user ? <AboutUs /> : <Navigate to='/login' />} />
-                  <Route path='/bookappoint' element={user ? <BookAppointment /> : <Navigate to='/login' />} />user?
+                  <Route path='/bookappoint' element={user ? <BookAppointment /> : <Navigate to='/login' />} />
                   <Route path='/appointmentform' element={user ? <AppointmentForm /> : <Navigate to='/login' />} />
                   <Route path='/viewAppointment' element={user ? <ViewAppointments /> : <Navigate to='/login' />} />
                   <Route path='/symptom' element={user ? <SymptomCheckerCard /> : <Navigate to='/login' />} />

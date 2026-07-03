@@ -1,7 +1,7 @@
 const Footer = () => {
     return (
         <footer className="bg-white text-gray py-4 text-center">
-            <p>&copy; 2024 HealthConnect.</p>
+            <p> © 2026  HealthConnect.</p>
         </footer>
     );
 }
