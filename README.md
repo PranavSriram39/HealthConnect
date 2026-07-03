@@ -41,12 +41,7 @@ Features:
 ## 🔗Links
 
 -Github Repository- 
-<br/>
-<br/>
--Demo Link- https://drive.google.com/file/d/1o8dpFHtu7soK5BcIb2u2fzi7oTTYbfgd/view?usp=sharing
-<br/><br/>
--Screenshots Drive link- https://drive.google.com/drive/folders/12NvEeUvezqSA48GWwaudzPVa1A9SOOMS?usp=drive_link
-<br/><br/>
+
 -Deployment Link- 
 <br/>
 
@@ -247,23 +242,24 @@ When users enter a food item, the platform provides detailed information about i
 
 ## 👨‍💻Team Members
 
-1.
+1.Abhiram
 <br>
-Email- 
-<br>
-
-<br>
-Email- 
+Email- 23r01a0598@cmrithyderabad.edu.in
 <br>
 
-3. 
+2. L.Gowthum
 <br>
-Email- 
+Email-  23r01a0599@cmrithyderabad.edu.in
 <br>
 
-4.
+3.  S.Abhishek
 <br>
-Email- 
+Email-  23r01a05c0@cmrithyderabad.edu.in
+<br>
+
+4. S.Pranav
+<br>
+Email-  23r01a05c1@cmrithyderabad.edu.in
 
 ## 👨‍🏫Mentors
 
