@@ -161,8 +161,8 @@ Health-related businesses, such as pharmaceutical companies, health insurance  p
   - REACT_APP_API_URL=https://your-backend-url
 
 ### Example
-- Frontend URL: https://your-frontend-app.netlify.app
-- Backend URL: https://your-backend-app.onrender.com
+- Frontend URL:https://healthconnect360.vercel.app/
+- Backend URL: https://urbackend.onrender.com
 
 ## �🛠Project Setup
 
