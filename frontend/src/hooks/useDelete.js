@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { apiUrl } from '../utils/api'
 
 export const useDelete = () => {
   const [error, setError] = useState(null)
@@ -10,7 +11,7 @@ export const useDelete = () => {
     setError(null)
     console.log(email)
 
-    const response = await fetch('/api/user/delete', {
+    const response = await fetch(apiUrl('/api/user/delete'), {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ email })

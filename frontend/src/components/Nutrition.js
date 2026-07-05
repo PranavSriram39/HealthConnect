@@ -1,5 +1,8 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { genContext } from '../contexts/GeneralContext';
+import bgImage from '../images/bg.png';
+import noImage from '../images/noimg.png';
+import { apiUrl } from '../utils/api';
 
 const Nutrition = () => {
   const { nutri } = useContext(genContext);
@@ -57,6 +60,13 @@ const Nutrition = () => {
     localStorage.setItem('recentNutritionSearches', JSON.stringify(next));
   };
 
+  const foodImageUrl = useMemo(() => {
+    if (selectedFood?.photo?.thumb) return selectedFood.photo.thumb;
+    if (selectedFood?.photo?.highres) return selectedFood.photo.highres;
+
+    return noImage;
+  }, [selectedFood]);
+
   const handleSearch = async (value = query) => {
     const term = value?.trim();
     if (!term) {
@@ -70,7 +80,7 @@ const Nutrition = () => {
     setFoods([]);
 
     try {
-      const response = await fetch('/api/nutrition/', {
+      const response = await fetch(apiUrl('/api/nutrition/'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ foodQuery: term }),
@@ -100,7 +110,7 @@ const Nutrition = () => {
   };
 
   return (
-    <div style={{ backgroundImage: 'url("https://source.unsplash.com/1920x1080/?food")' }} className='min-h-screen bg-cover bg-no-repeat'>
+    <div style={{ backgroundImage: `linear-gradient(rgba(255,255,255,0.82), rgba(255,255,255,0.82)), url(${bgImage})` }} className='min-h-screen bg-cover bg-no-repeat'>
       <div className='min-h-screen bg-white/90 px-4 py-8 md:px-8'>
         <div className='mx-auto flex max-w-6xl flex-col gap-6 rounded-xl bg-white p-6 shadow-lg'>
           <div className='text-center'>
@@ -188,8 +198,8 @@ const Nutrition = () => {
 
               <div className='rounded-xl border border-gray-200 bg-white p-6 shadow-sm'>
                 <h3 className='text-xl font-semibold text-gray-800'>Food Image</h3>
-                {selectedFood.photo?.thumb ? (
-                  <img src={selectedFood.photo.thumb} alt={selectedFood.food_name} className='mt-4 w-full rounded-lg object-cover' />
+                {foodImageUrl ? (
+                  <img src={foodImageUrl} alt={selectedFood.food_name || selectedFood.name || query} className='mt-4 h-64 w-full rounded-lg object-cover' />
                 ) : (
                   <div className='mt-4 flex h-40 items-center justify-center rounded-lg bg-gray-100 text-sm text-gray-500'>No image available</div>
                 )}

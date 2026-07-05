@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAuthContext } from './useAuthContext'
+import { apiUrl } from '../utils/api'
 
 export const useSignup = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -8,7 +9,7 @@ export const useSignup = () => {
   const signup = async ({ email, password, username, role, expertise, contact }) => {
     setIsLoading(true)
 
-    const response = await fetch('/api/user/signup', {
+    const response = await fetch(apiUrl('/api/user/signup'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, role, expertise, contact, username }),

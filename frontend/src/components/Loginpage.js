@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLogin } from '../hooks/useLogin';
+import bgImage from '../images/bg.png';
 import {
   validateLoginField,
   validateLoginValues,
@@ -75,9 +76,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <div className='transition-all w-4/5 m-auto'>
-        <div className='transition-all flex justify-center items-center'>
+    <div className='min-h-screen bg-cover bg-center' style={{ backgroundImage: `linear-gradient(rgba(8, 38, 29, 0.55), rgba(8, 38, 29, 0.55)), url(${bgImage})` }}>
+      <div className='min-h-screen bg-black/20 px-4 py-8 flex items-center justify-center'>
+        <div className='transition-all w-4/5 m-auto'>
+          <div className='transition-all flex justify-center items-center'>
           <div className='transition-all max-w-auto shadow-2xl bg-white flex justify-center rounded-xl lg:rounded-l-xl lg:rounded-r-none'>
             <div>
               <form onSubmit={handleSubmit} className='transition-all w-[400px] min-h-[500px] mx-auto bg-white-400 p-8 px-8'>
@@ -144,7 +146,7 @@ const LoginPage = () => {
             </div>
           </div>
           <div className='transition-all image hidden lg:block '>
-            <div style={{ backgroundImage: 'url("https://source.unsplash.com/400x500/?health")' }} className='transition-all overflow-hidden max-w-[800px] object-contain rounded-r-xl'>
+            <div style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url(${bgImage})` }} className='transition-all overflow-hidden max-w-[800px] object-contain rounded-r-xl'>
               <div className='transition-all z-10 w-[400px] h-[500px] flex justify-center items-center'>
                 <div className='transition-all w-full h-full m-auto rounded-r-xl'>
                   <div className='transition-all flex flex-col justify-center h-full bg-black bg-opacity-30 p-8 rounded-r-xl'>
@@ -157,6 +159,7 @@ const LoginPage = () => {
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>

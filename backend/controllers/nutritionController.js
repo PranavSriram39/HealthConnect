@@ -103,6 +103,27 @@ const getNutritionData = async (req, res) => {
     const appKey = process.env.NUTRITIONIX_APP_KEY || process.env.APP_KEY || '';
     const usdaKey = process.env.USDA_API_KEY || '';
 
+    if (!appId && !appKey && !usdaKey) {
+      const sample = [
+        {
+          name: 'Apple',
+          serving_qty: 1,
+          serving_unit: 'medium (182 g)',
+          calories: 95,
+          protein: 0.5,
+          carbohydrates: 25,
+          fat: 0.3,
+          fiber: 4.4,
+          sugar: 19,
+          sodium: 1,
+          cholesterol: 0,
+          potassium: 195,
+          vitamins: { vitamin_c_mg: 8.4 }
+        }
+      ];
+      return res.status(200).json({ foods: sample, query: foodQuery, message: 'No nutrition API credentials configured. Showing sample results.' });
+    }
+
     // Prefer Nutritionix if credentials are present, otherwise fall back to USDA FoodData Central
     if (appId && appKey) {
       // Try Nutritionix first; if it returns 401/403 and USDA key exists, fall back to USDA

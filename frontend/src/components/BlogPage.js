@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import noimg from '../images/noimg.png'
 import '../styles/input.css'
+import { apiUrl } from '../utils/api';
 
 const BlogCard = ({ blog, noimg, truncateContent }) => {
   const [open, setOpen] = useState(false);
@@ -31,7 +32,7 @@ const Blog = () => {
   const handlesubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`/api/blogs?q=${encodeURIComponent(query)}`)
+      const response = await fetch(apiUrl(`/api/blogs?q=${encodeURIComponent(query)}`))
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -47,7 +48,7 @@ const Blog = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch('/api/blogs');
+        const response = await fetch(apiUrl('/api/blogs'));
         if (!response.ok) throw new Error('Failed to load blogs');
         const data = await response.json();
         setBlogs(data || []);
