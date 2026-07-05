@@ -18,7 +18,26 @@ dns.setServers(['8.8.8.8', '1.1.1.1']);
 const app = express();
 
 // Middleware
-app.use(cors());
+const allowedOriginPatterns = [/^http:\/\/localhost(:\d+)?$/, /^https:\/\/.*\.vercel\.app$/];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin) {
+            callback(null, true);
+            return;
+        }
+
+        const allowed = allowedOriginPatterns.some((pattern) => pattern.test(origin));
+        if (allowed) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use((req, res, next) => {
     console.log(req.path, req.method);

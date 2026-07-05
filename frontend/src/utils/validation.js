@@ -56,7 +56,9 @@ export const validateSignupField = (field, value, values = {}) => {
       if (trimmedValue !== values.password) return 'Passwords do not match'
       return ''
     case 'contact':
-      return trimmedValue ? '' : 'Contact is required'
+      if (!trimmedValue) return 'Contact is required'
+      if (!/^\d{10}$/.test(trimmedValue)) return 'Contact must be exactly 10 digits'
+      return ''
     case 'role':
       return trimmedValue ? '' : 'Role is required'
     case 'expertise':

@@ -23,6 +23,8 @@ const SignupPage = () => {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [successToast, setSuccessToast] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
   const { signup, isLoading } = useSignup();
 
@@ -182,16 +184,26 @@ const SignupPage = () => {
 
                 <div className='transition-all flex flex-col text-greeen py-0.1'>
                   <label className='text-sm'>Password</label>
-                  <input
-                    ref={passwordRef}
-                    name='password'
-                    type='password'
-                    value={form.password}
-                    onChange={handleFieldChange('password')}
-                    className={`transition-all bg-gray mt-1 p-1.5 text-sm border-2 ${errors.password ? 'border-red-500' : 'border-slate-300'}`}
-                    aria-invalid={!!errors.password}
-                    aria-describedby='signup-password-error signup-password-rules'
-                  />
+                  <div className='relative'>
+                    <input
+                      ref={passwordRef}
+                      name='password'
+                      type={showPassword ? 'text' : 'password'}
+                      value={form.password}
+                      onChange={handleFieldChange('password')}
+                      className={`transition-all bg-gray mt-1 p-1.5 pr-10 text-sm border-2 w-full ${errors.password ? 'border-red-500' : 'border-slate-300'}`}
+                      aria-invalid={!!errors.password}
+                      aria-describedby='signup-password-error signup-password-rules'
+                    />
+                    <button
+                      type='button'
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className='absolute right-2 top-1/2 -translate-y-1/2 text-gray-600'
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showPassword ? '🙈' : '👁️'}
+                    </button>
+                  </div>
                   {errors.password && !form.password && (
                     <p id='signup-password-error' className='mt-1 text-sm text-red-600 transition-all duration-200'>
                       {errors.password}
@@ -210,16 +222,26 @@ const SignupPage = () => {
 
                 <div className='transition-all flex flex-col text-greeen py-0.1'>
                   <label className='text-sm'>Confirm Password</label>
-                  <input
-                    ref={confirmPasswordRef}
-                    name='confirmPassword'
-                    type='password'
-                    value={form.confirmPassword}
-                    onChange={handleFieldChange('confirmPassword')}
-                    className={`transition-all bg-gray mt-1 p-1.5 text-sm border-2 ${errors.confirmPassword ? 'border-red-500' : 'border-slate-300'}`}
-                    aria-invalid={!!errors.confirmPassword}
-                    aria-describedby='signup-confirm-password-error'
-                  />
+                  <div className='relative'>
+                    <input
+                      ref={confirmPasswordRef}
+                      name='confirmPassword'
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      value={form.confirmPassword}
+                      onChange={handleFieldChange('confirmPassword')}
+                      className={`transition-all bg-gray mt-1 p-1.5 pr-10 text-sm border-2 w-full ${errors.confirmPassword ? 'border-red-500' : 'border-slate-300'}`}
+                      aria-invalid={!!errors.confirmPassword}
+                      aria-describedby='signup-confirm-password-error'
+                    />
+                    <button
+                      type='button'
+                      onClick={() => setShowConfirmPassword((prev) => !prev)}
+                      className='absolute right-2 top-1/2 -translate-y-1/2 text-gray-600'
+                      aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+                    >
+                      {showConfirmPassword ? '🙈' : '👁️'}
+                    </button>
+                  </div>
                   {errors.confirmPassword && (
                     <p id='signup-confirm-password-error' className='mt-1 text-sm text-red-600 transition-all duration-200'>
                       {errors.confirmPassword}
@@ -232,9 +254,14 @@ const SignupPage = () => {
                   <input
                     ref={contactRef}
                     name='contact'
-                    type='text'
+                    type='tel'
+                    inputMode='numeric'
+                    maxLength={10}
                     value={form.contact}
-                    onChange={handleFieldChange('contact')}
+                    onChange={(event) => {
+                      const digitsOnly = event.target.value.replace(/\D/g, '').slice(0, 10);
+                      handleFieldChange('contact')({ target: { value: digitsOnly } });
+                    }}
                     className={`transition-all bg-gray mt-1 p-1.5 text-sm border-2 ${errors.contact ? 'border-red-500' : 'border-slate-300'}`}
                     aria-invalid={!!errors.contact}
                     aria-describedby='signup-contact-error'
