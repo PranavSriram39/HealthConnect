@@ -140,7 +140,31 @@ Health-related businesses, such as pharmaceutical companies, health insurance  p
 
 
 
-## 🛠Project Setup
+## � Deployment
+
+### Backend
+- Deploy the backend folder to Render, Railway, or Heroku.
+- Set these environment variables:
+  - PORT
+  - MONGOURI
+  - SECRET
+  - APP_ID
+  - APP_KEY
+  - USDA_API_KEY
+- Start command: node server.js
+
+### Frontend
+- Deploy the frontend folder to Netlify, Vercel, or Render Static Site.
+- Build command: npm run build
+- Publish directory: build
+- Set this environment variable:
+  - REACT_APP_API_URL=https://your-backend-url
+
+### Example
+- Frontend URL: https://your-frontend-app.netlify.app
+- Backend URL: https://your-backend-app.onrender.com
+
+## �🛠Project Setup
 
 1)Clone the Repository:<br>
 Use Git to clone the project repository:
